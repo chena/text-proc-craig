@@ -25,18 +25,6 @@ class TextProcessor(object):
 		self.doc_count = 0
 		self.inverse_list = defaultdict(int) # inverse list of words to number of documents
 
-	"""
-	def process(self, text):
-		# tokenize each sentence
-		sent = [word_tokenize(sent) for sent in sent_tokenize(text)]
-		# remove punctuation and stop words for each sentence
-		stop_words = stopwords.words('english')
-		sent_sw_removed = [filter(lambda w: w.lower() not in stop_words and w not in string.punctuation, tokens) for tokens in sent]
-		# stemming
-		porter = PorterStemmer()
-		return [map(lambda w: porter.stem(w), words) for words in sent_sw_removed]
-	"""
-
 	def process_doc(self, doc):
 		self.doc_count += 1
 		processed = []
