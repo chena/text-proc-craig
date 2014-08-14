@@ -5,12 +5,15 @@
     	<!--<link rel="stylesheet" media="all" href="{{ url_for('static', filename='bootstrap.min.css') }}">
     	<link rel="stylesheet" media="all" href="{{ url_for('static', filename='style.css') }}">
     	<script src="{{ url_for('static', filename='jquery-1.11.0.min.js') }}"></script>-->
+		<base target="_blank"><!-- open all links in new tabs-->
 	</head>
 	<body>
 		<form name="input" method="post">
 			URL: <input type="text" name="url">
 			<input type="submit" value="Submit">
 		</form>
-		{{link}}
+		<p>
+			Most similar: <a href="{{link}}">{{link}}</a>
+		</p>
 	</body>
 </html>
