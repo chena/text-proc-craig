@@ -1,4 +1,3 @@
-from __future__ import division
 from nltk import sent_tokenize
 from nltk import word_tokenize
 from nltk.corpus import stopwords
@@ -13,22 +12,30 @@ import math
 import numpy as np
 import os
 
+class Document:
+	def __init__(self, link, original, processed):
+		self.link = link
+		self.original = original
+		self.processed = processed
+		self.rank_list = []
+
 class TextProcessor(object):
 	def __init__(self):
 		self.stop_words = stopwords.words('english')
 		self.porter = PorterStemmer()
+		self.vectorizer = TfidfVectorizer()
+
 		self.doc_count = 0
 		self.inverse_list = defaultdict(int) # inverse list of words to number of documents
+		self.doc_collection = []
 		self.word_list = []
-		self.vectorizer = TfidfVectorizer()
+		self.doc_mat = None # document matrix
 
 	def process_doc(self, doc):
 		self.doc_count += 1
 		processed = []
 
-		# TODO: check the encoding
-		# text = doc.translate(None, string.punctuation)
-		text = doc.encode('utf-8').translate(None, string.punctuation)
+		text = doc.translate(None, string.punctuation)
 		words = word_tokenize(text)
 
 		for w in words:
@@ -43,15 +50,14 @@ class TextProcessor(object):
 		return processed
 
 	def gen_matrix(self, text):
-		word_counts = [dict(Counter(tokens)) for tokens in text]
 		self.word_list = self.inverse_list.keys()
+		word_counts = [dict(Counter(tokens)) for tokens in text]
+		idf_weights = self._gen_idf_weights(self.word_list)
 
 		# prepare the document matrix
 		mat = np.zeros((self.doc_count, len(self.inverse_list)))
 
 		index = 0
-		idf_weights = self._gen_idf_weights(self.word_list)
-
 		for wc in word_counts:
 			for w, c in wc.items():
 				mat[index, self.word_list.index(w)] = c
@@ -61,6 +67,7 @@ class TextProcessor(object):
 		for i in range(mat.shape[1]):
 			mat[:, i] *= idf_weights[i]
 
+		self.doc_mat = mat
 		return mat
 
 	def _gen_idf_weights(self, wlist):
@@ -72,21 +79,26 @@ class TextProcessor(object):
 		# linnalg.norm calculates L2 norm by default
 		return np.dot(d1, d2) / (np.linalg.norm(d1) * np.linalg.norm(d2))
 
-	def compute_similarity_sklearn(self, text):
-		collection = [' '.join(doc) for doc in text]
+	def build_doc_matrix(self):
 		# transoforms the corpus into tf-idf representation
 		# returning a sparse matrix
-		mat = self.vectorizer.fit_transform(collection)
+
+		# TODO: fetch text from Document objects
+		text = [' '.join(doc.processed) for doc in self.doc_collection]
+		self.doc_mat = self.vectorizer.fit_transform(text)
 		self.word_list = self.vectorizer.get_feature_names()
-		# print self.word_list
-		#for doc in mat:
 		
+	def compute_similarity_sklearn(self):
+		self.build_doc_matrix()
+		
+		"""
 		dense_mat = mat.A
 		sorted_indices = np.argsort(dense_mat)
 		#for in in range(dense_mat.shape[0]):
 		for i in range(5): # just look at first 5 docs for now
 			rank = dense_mat[i, :][sorted_indices[i, :]]
 			print rank
+		"""
 
 		"""
 		for i in range(dense_mat.shape[0]):
@@ -97,14 +109,19 @@ class TextProcessor(object):
 			print
 		"""
 		# .T gets you the transpose matrix and .A converts from sparse to normal dense representation
+		# note: no need to normalize, since Vectorizer will return normalized tf-idf
+		mat = self.doc_mat
 		return (mat * mat.T).A
 
 	def get_top_items(self, vect, num=10):
 		"""
-		find the top n items in the given vector
+		find the indices of the top n items in the given vector
 		"""
 		top10 = np.argpartition(vect, -num)[-num:] # how does partision work? - we need the whole list sorted?
 		return top10[np.argsort(vect[top10])]
+
+	#def get_rank_list(self, vect, num=10):
+
 
 # using some small datasets for testing purposes
 if __name__ == '__main__':
