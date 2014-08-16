@@ -35,22 +35,24 @@ def main():
 		# should give some kind of error
 		return render_template('index.html')
 
-	if known_pairs.has_key(url):
-		return render_template('index.html', qry=url, link=known_pairs[url])
+	#if known_pairs.has_key(url):
+	#	return render_template('index.html', qry=url, link=known_pairs[url])
 
 	# unseen document
 	qry_doc = _get_qry_page(url)
 	processed = processor.process_doc(qry_doc.encode('utf-8'))
-	vect = processor.vectorizer.transform([' '.join(processed)])
+	vect = processor.vectorizer.transform([' '.join(processed)]) # this returns a sparse vector of csr_matrix type
 	sim_vect = processor.doc_mat * vect.T
 
-	max_ind = np.argmax(sim_vect.A)
+	max_ind = np.argmax(sim_vect)
 	match_doc = processor.doc_collection[max_ind]
 
-	return render_template('index.html', qry=url, link=match_doc.link, desc=match_doc.original)
+	print processor.doc_mat
+	
+	#top_terms = processor.get_top_terms(processor.doc_mat[max_ind,:], 10)
+	#print top_terms
 
-	# TODO: process the text and analyze
-
+	return render_template('index.html', qry=url, qry_desc=qry_doc, link=match_doc.link, desc=match_doc.original)
 
 """
 @app.route("/", methods=['GET', 'POST'])
@@ -64,13 +66,11 @@ def main():
 	return render_template('index.html')
 """
 
-# move this to util
 def _get_qry_page(url):
 	http = urllib3.PoolManager()
 	page = http.request('GET', url).data
 	data = BeautifulSoup(page)
 	return data.h2.text.strip() + ' ' + data.find(id='postingbody').text.strip() 
-
 
 if __name__ == "__main__":
     app.run(debug=True, port=7000)

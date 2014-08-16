@@ -11,12 +11,16 @@
 			URL: <input type="text" name="url">
 			<input type="submit" value="Submit">
 		</form>
+
 		<ul>
-			<li>Your search: <a href="{{link}}" target="_blank">{{qry}}</a></li>
-			<li>Most similar: <a href="{{link}}" target="_blank">{{link}}</a></li>
+			<li>
+				Your search: <a href="{{qry}}" target="_blank">{{qry}}</a>
+				<p>{{qry_desc}}</p>
+			</li>
+			<li>
+				Most similar: <a href="{{link}}" target="_blank">{{link}}</a>
+				<p>{{desc}}</p>
+			</li>
 		</ul>
-		<p>
-			{{desc}}
-		</p>
 	</body>
 </html>
