@@ -2,25 +2,33 @@
 <html>
 	<head>
 		<title>Craig</title>
-    	<!--<link rel="stylesheet" media="all" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    	<link rel="stylesheet" media="all" href="{{ url_for('static', filename='bootstrap.min.css') }}">
     	<link rel="stylesheet" media="all" href="{{ url_for('static', filename='style.css') }}">
-    	<script src="{{ url_for('static', filename='jquery-1.11.0.min.js') }}"></script>-->
+    	<!--<script src="{{ url_for('static', filename='jquery-1.11.0.min.js') }}"></script>-->
 	</head>
 	<body>
-		<form name="input" method="post">
-			URL: <input type="text" name="url">
-			<input type="submit" value="Submit">
-		</form>
+		<section id="query" class="container col-md-8 col-md-offset-2">
+			<h1>Craig Matcher</h1>
+			<form name="input" method="post">
+				<div class="input-group">
+					<input class="form-control" type="text" name="url" placeholder="Enter your URL">
+					<span class="input-group-btn">
+						<input class="btn btn-default" type="submit" value="Submit">
+					</span>
+				</div>
+			</form>
+		</section>
 
-		<ul>
-			<li>
-				Your search: <a href="{{qry}}" target="_blank">{{qry}}</a>
+		<section id="result" class="container">
+			<div class="col-md-6">
+				<strong>Your search: </strong><a href="{{qry}}" target="_blank">{{qry}}</a>
 				<p>{{qry_desc}}</p>
-			</li>
-			<li>
-				Most similar: <a href="{{link}}" target="_blank">{{link}}</a>
+			</div>
+
+			<div class="col-md-6">
+				<strong>Most similar: </strong><a href="{{link}}" target="_blank">{{link}}</a>
 				<p>{{desc}}</p>
-			</li>
-		</ul>
+			</div>
+		</section>
 	</body>
 </html>

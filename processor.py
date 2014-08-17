@@ -103,7 +103,7 @@ class TextProcessor(object):
 		"""
 		for i in range(dense_mat.shape[0]):
 			vect = dense_mat[i,:]
-			top10 = self.get_top_items(vect, 10)
+			top10 = self.get_top_terms(vect, 10)
 			for ind in top10:
 				print self.word_list[ind]
 			print
@@ -113,11 +113,11 @@ class TextProcessor(object):
 		mat = self.doc_mat
 		return (mat * mat.T).A
 
-	def get_top_items(self, vect, num=10):
+	def get_top_terms(self, vect, num=10):
 		"""
-		find the indices of the top n items in the given vector
+		find the indices of the top n terms in the given vector
 		"""
-		top10 = np.argpartition(vect, -num)[-num:] # how does partision work? - we need the whole list sorted?
+		top10 = vect.data.argpartition(vect.A, -num)[-num:] # how does partision work? - we need the whole list sorted?
 		return top10[np.argsort(vect[top10])]
 
 	#def get_rank_list(self, vect, num=10):

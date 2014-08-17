@@ -1,0 +1,12 @@
+#query {
+	margin-bottom: 20px;
+}
+
+#result {
+	padding: 15px;
+}
+
+#result ul {
+	list-style-type: none;
+	outline: none;
+}
