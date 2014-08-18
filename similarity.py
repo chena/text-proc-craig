@@ -15,14 +15,6 @@ def find_similar_pairs(data):
 	with open('similar_0817.json', 'w') as file_output:
 		json.dump(data_output, file_output)
 
-	# print original text of similar pairs
-	"""
-	for f, s in similar_pairs:
-		print original[f].encode('utf-8')
-		print original[s].encode('utf-8')
-		print
-	"""
-
 if __name__ == '__main__':
 	if len(sys.argv) < 2:
 		print >> sys.stderr, 'usage: %s json_file' % sys.argv[0]

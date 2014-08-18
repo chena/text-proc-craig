@@ -7,7 +7,6 @@ from collections import Counter
 from collections import defaultdict
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import sys
 import string
 import math
 import numpy as np
@@ -118,15 +117,14 @@ class TextProcessor(object):
 		"""
 		find the indices of the top n items in the given vector
 		"""
-		print vect.shape
 		top = np.argpartition(vect, -num)[-num:]
 		return top[np.argsort(vect[top])][::-1]
 
-	def map_json_data(self, data):
+	def map_data(self, dataset):
 		"""
-		map the given JSON data into the document collection
+		iterate over the dataset and map each document into the document collection
 		"""
-		for doc in json.loads(data):
+		for doc in dataset:
 			title, desc = doc['title'], doc['description']
 			text = title + ' ' + desc # combine title and post content
 			doc = Document(doc['link'], title, desc, self.process_doc(text.encode('utf-8')))

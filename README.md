@@ -7,6 +7,7 @@ This project has various components and is still in progress.
 * Text processing with [NLTK](http://www.nltk.org/), such as tokenization, stopwords removal and stemming.
 * Building vector space model for a collection of documents using the [scikit-learn](http://scikit-learn.org/stable/index.html) library. Results are used to compare with my own implementation of the algorithms.
 * Crawling data from NYC sublet postings on Craigslist using [Scrapy](http://doc.scrapy.org/en/latest/index.html). By default, each run will scrape the first 10 pages of [https://newyork.craigslist.org/sub/](https://newyork.craigslist.org/sub/) (1000 postings with their titles and contents) 
+* Data storage using MongoDB.
 * The web interface allows you to enter an URL of an exsting posting and returns you the most similar postings based on the textual information contained in the documents.
 
 ## Brief Background - Text Processing and VSM
@@ -28,13 +29,16 @@ pip install nltk
 pip install -U numpy scipy scikit-learn
 pip install Scrapy
 pip install beautifulsoup4
+pip install Flask-PyMongo
+pip install scrapy-mongodb
+
 ```
 
 ## Usage
 
 To run the app:
 
-* Run `python app.py` to start the server
+* Run `python craig.py` to start the server
 * Visit the running app at `http://localhost:7000/`
 
 ## TODO's

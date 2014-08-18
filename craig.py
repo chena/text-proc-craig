@@ -5,19 +5,17 @@ import re
 from bs4 import BeautifulSoup
 import urllib3
 import numpy as np
+from flask.ext.pymongo import PyMongo
 
 app = Flask(__name__)
-
-# initial setup
-# TODO: should load the most recent json (or read from DB)
-# http://flask-pymongo.readthedocs.org/en/latest/
-# How to refresh data for a running app?
+mongo = PyMongo(app)
 processor = TextProcessor()
-known_pairs = json.load(open('similar_0813.json'))
-
-json_data = open('craig_0817.json').read()
-processor.map_json_data(json_data)
-processor.build_doc_matrix()
+with app.app_context():
+	processor.map_data(mongo.db.postings.find())
+	processor.build_doc_matrix()
+# How to refresh data for a running app?
+#known_pairs = json.load(open('similar_0813.json'))
+#json_data = open('craig_0817.json').read()
 
 @app.route("/", methods=['GET', 'POST'])
 def main():
@@ -58,6 +56,6 @@ def _get_qry_doc(url):
 	text = title + ' ' + desc
 	return Document(url, title, desc, processor.process_doc(text.encode('utf-8')))
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True, port=7000)
 
