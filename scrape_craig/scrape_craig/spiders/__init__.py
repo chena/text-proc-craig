@@ -30,7 +30,7 @@ class CraigSpider(CrawlSpider):
 
 		item = ScrapeCraigItem()
 		item['link'] = url
-		item['pid'] = re.search('/(\d+).html', url).group(1)
+		# item['pid'] = re.search('/(\d+).html', url).group(1)
 		
 		title = response.xpath('//h2[@class="postingtitle"]/text()').extract()
 		# remove as much whitespace as possible

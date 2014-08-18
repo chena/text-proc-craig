@@ -11,12 +11,13 @@ import sys
 import string
 import math
 import numpy as np
-import os
+import json
 
 class Document:
-	def __init__(self, link, original, processed):
+	def __init__(self, link, title, description, processed):
 		self.link = link
-		self.original = original
+		self.title = title
+		self.description = description
 		self.processed = processed
 
 class TextProcessor(object):
@@ -82,7 +83,7 @@ class TextProcessor(object):
 	using scikit-learn library #
 		step 1: build the document matrix with tf-idf weights for the collection
 		step 2: compute similarity between each document against all other documents, resulting in an n x n matrix
-		step 3: extract the most similar documents TODO: extract a ranked list
+		step 3: extract the most similar documents
 	"""
 
 	def build_doc_matrix(self):
@@ -120,70 +121,16 @@ class TextProcessor(object):
 		print vect.shape
 		top = np.argpartition(vect, -num)[-num:]
 		return top[np.argsort(vect[top])][::-1]
-		
+
+	def map_json_data(self, data):
 		"""
-		dense_mat = mat.A
-		sorted_indices = np.argsort(dense_mat)
-		#for in in range(dense_mat.shape[0]):
-		for i in range(5): # just look at first 5 docs for now
-			rank = dense_mat[i, :][sorted_indices[i, :]]
-			print rank
+		map the given JSON data into the document collection
 		"""
+		for doc in json.loads(data):
+			title, desc = doc['title'], doc['description']
+			text = title + ' ' + desc # combine title and post content
+			doc = Document(doc['link'], title, desc, self.process_doc(text.encode('utf-8')))
+			self.doc_collection.append(doc)
 
-		"""
-		for i in range(dense_mat.shape[0]):
-			vect = dense_mat[i,:]
-			top10 = self.get_top_terms(vect, 10)
-			for ind in top10:
-				print self.word_list[ind]
-			print
-		"""
-
-# using some small datasets for testing purposes
-if __name__ == '__main__':
-	if len(sys.argv) < 2:
-		print >> sys.stderr, 'usage: %s data_folder' % sys.argv[0]
-	else:
-		processor = TextProcessor()
-		processed_collection = []
-		dir_name = sys.argv[1]
-
-		# traverse the data directory and process each document
-		for fname in os.listdir(dir_name):
-			doc = open(os.path.join(dir_name, fname)).read()
-			processed_collection.append(processor.process_doc(doc))
-
-		"""
-		# generate the document matrix
-		mat = processor.gen_matrix(processed_collection)
-
-		d1, d2, d3, d4 = mat
-		
-		print mat.shape
-
-		print 'd1 & d2 %s' % processor.consine_similarity(d1, d2)
-		print 'd1 & d3 %s' % processor.consine_similarity(d1, d3)
-		print 'd1 & d4 %s' % processor.consine_similarity(d1, d4)
-		print 'd2 & d3 %s' % processor.consine_similarity(d2, d3)
-		print 'd2 & d4 %s' % processor.consine_similarity(d2, d4)
-		print 'd3 & d4 %s' % processor.consine_similarity(d3, d4)
-		"""
-
-		processor.compute_similarity_sklearn(processed_collection)
-
-		"""
-		# generate the document matrix
-		mat = processor.gen_matrix(processed_collection)
-		print processor.inverse_list
-		d1, d2, d3, d4 = mat
-
-		print 'd1 & d1 %s' % processor.consine_similarity(d1, d1)
-		print 'd1 & d2 %s' % processor.consine_similarity(d1, d2)
-		print 'd1 & d3 %s' % processor.consine_similarity(d1, d3)
-		print 'd1 & d4 %s' % processor.consine_similarity(d1, d4)
-		print 'd2 & d3 %s' % processor.consine_similarity(d2, d3)
-		print 'd2 & d4 %s' % processor.consine_similarity(d2, d4)
-		print 'd3 & d4 %s' % processor.consine_similarity(d3, d4)
-		"""
 
 

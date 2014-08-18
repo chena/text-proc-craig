@@ -16,11 +16,7 @@ processor = TextProcessor()
 known_pairs = json.load(open('similar_0813.json'))
 
 json_data = open('craig_0817.json').read()
-for post in json.loads(json_data):
-	# combine title and post content
-	text = post['title'] + ' ' + post['description']
-	doc = Document(post['link'], text, processor.process_doc(text.encode('utf-8')))
-	processor.doc_collection.append(doc)
+processor.map_json_data(json_data)
 processor.build_doc_matrix()
 
 @app.route("/", methods=['GET', 'POST'])
@@ -28,7 +24,7 @@ def main():
 	if request.method == 'GET':
 		return render_template('index.html')
 
-	url = request.form['url']
+	url = request.form['url'].strip()
 	domain = 'newyork.craigslist.org/'
 
 	if not domain in url:
@@ -39,10 +35,8 @@ def main():
 	#	return render_template('index.html', qry=url, link=known_pairs[url])
 
 	# process unseen document
-	qry_text = _get_qry_page(url)
-	processed = processor.process_doc(qry_text.encode('utf-8'))
-	vect = processor.vectorizer.transform([' '.join(processed)]) # this returns a sparse vector of csr_matrix type
-	qry_doc = Document(url, qry_text, processed)
+	qry_doc = _get_qry_doc(url)
+	vect = processor.vectorizer.transform([' '.join(qry_doc.processed)]) # this returns a sparse vector of csr_matrix type
 
 	# build similarity matrix and extract top matches
 	sim_vect = processor.doc_mat * vect.T
@@ -50,7 +44,7 @@ def main():
 	matches = [processor.doc_collection[i] for i in top_ind]
 
 	# extract top keywords from the query document
-	
+
 	# TODO: get keywords
 	#top_terms = processor.get_top_terms(processor.doc_mat[max_ind,:], 10)
 	#print top_terms
@@ -59,11 +53,13 @@ def main():
 
 	return render_template('index.html', qry=qry_doc, matches=matches)
 
-def _get_qry_page(url):
+def _get_qry_doc(url):
 	http = urllib3.PoolManager()
 	page = http.request('GET', url).data
 	data = BeautifulSoup(page)
-	return data.h2.text.strip() + ' ' + data.find(id='postingbody').text.strip() 
+	title, desc = data.h2.text.strip(), data.find(id='postingbody').text.strip() 
+	text = title + ' ' + desc
+	return Document(url, title, desc, processor.process_doc(text.encode('utf-8')))
 
 if __name__ == "__main__":
     app.run(debug=True, port=7000)

@@ -24,8 +24,8 @@
 			<!-- TODO: don't show labels when there's nothing to show-->
 			<div class="col-md-6">
 				<h2>Your Search</h2>
-				<a href="{{qry.link}}" target="_blank">{{qry.link}}</a>
-				<p>{{qry.original}}</p>
+				<a href="{{qry.link}}" target="_blank">{{qry.title}}</a>
+				<p>{{qry.description}}</p>
 			</div>
 
 			<div class="col-md-6">
@@ -33,8 +33,8 @@
 				<ol>
 				{% for m in matches %}
 				<li>
-					<a href="{{m.link}}" target="_blank">{{m.link}}</a>
-					<p>{{m.original}}</p>
+					<a href="{{m.link}}" target="_blank">{{m.title}}</a>
+					<p>{{m.description}}</p>
 				</li>
 				{% endfor %}
 				</ol>

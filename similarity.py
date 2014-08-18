@@ -8,13 +8,7 @@ def find_similar_pairs(data):
 	Find the most similar document for each document in the collection, output the pairs
 	"""
 	processor = TextProcessor()
-
-	for post in json.loads(data):
-		# combine title and post content
-		text = post['title'] + ' ' + post['description']
-		doc = Document(post['link'], text, processor.process_doc(text.encode('utf-8')))
-		processor.doc_collection.append(doc)
-
+	processor.map_json_data(data)
 	similar_pairs = processor.similarity_analysis()
 	data_output = {processor.doc_collection[f].link: processor.doc_collection[s].link for f, s in similar_pairs}
 	
