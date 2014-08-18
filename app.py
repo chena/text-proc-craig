@@ -40,16 +40,13 @@ def main():
 
 	# build similarity matrix and extract top matches
 	sim_vect = processor.doc_mat * vect.T
-	top_ind = processor.get_top_ind(sim_vect.A.flatten(), 10)
-	matches = [processor.doc_collection[i] for i in top_ind]
+	# we need to first convert the sparse array to dense form and flatten it
+	top_sim_ind = processor.get_top_ind(sim_vect.A.flatten(), 10)
+	matches = [processor.doc_collection[i] for i in top_sim_ind]
 
-	# extract top keywords from the query document
-
-	# TODO: get keywords
-	#top_terms = processor.get_top_terms(processor.doc_mat[max_ind,:], 10)
-	#print top_terms
-
-	# TODO: exclude exact match
+	# exclude exact match
+	if matches[0].link == qry_doc.link:
+		del matches[0]
 
 	return render_template('index.html', qry=qry_doc, matches=matches)
 
