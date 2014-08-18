@@ -11,11 +11,9 @@ app = Flask(__name__)
 mongo = PyMongo(app)
 processor = TextProcessor()
 with app.app_context():
+	# How to refresh data for a running app? Delete outdated data?
 	processor.map_data(mongo.db.postings.find())
 	processor.build_doc_matrix()
-# How to refresh data for a running app?
-#known_pairs = json.load(open('similar_0813.json'))
-#json_data = open('craig_0817.json').read()
 
 @app.route("/", methods=['GET', 'POST'])
 def main():

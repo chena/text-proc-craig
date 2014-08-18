@@ -15,6 +15,8 @@ NEWSPIDER_MODULE = 'scrape_craig.spiders'
 MONGODB_URI = 'mongodb://localhost:27017'
 MONGODB_DATABASE = 'craig'
 MONGODB_COLLECTION = 'postings'
+MONGODB_UNIQUE_KEY = 'pid'
+MONGODB_STOP_ON_DUPLICATE = 1 # tell the crawler to stop when one duplicate is detected
 
 ITEM_PIPELINES = ['scrapy_mongodb.MongoDBPipeline']
 

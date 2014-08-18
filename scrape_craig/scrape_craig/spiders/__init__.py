@@ -30,7 +30,7 @@ class CraigSpider(CrawlSpider):
 
 		item = ScrapeCraigItem()
 		item['link'] = url
-		# item['pid'] = re.search('/(\d+).html', url).group(1)
+		item['pid'] = re.search('/(\d+).html', url).group(1)
 		
 		title = response.xpath('//h2[@class="postingtitle"]/text()').extract()
 		# remove as much whitespace as possible
@@ -39,6 +39,5 @@ class CraigSpider(CrawlSpider):
 		body = response.xpath('//section[@id="postingbody"]/text()').extract()
 		item['description'] = ' '.join([b.strip() for b in body]).strip()
 		
-		# TODO: maybe extract the main image as well?
 		# TODO: extract price? location?
 		yield item
