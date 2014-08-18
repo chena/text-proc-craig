@@ -15,20 +15,10 @@ def find_similar_pairs(data):
 		doc = Document(post['link'], text, processor.process_doc(text.encode('utf-8')))
 		processor.doc_collection.append(doc)
 
-	# similarity analysis
-	sim_mat = processor.compute_similarity_sklearn()
-	print sim_mat
-	# zero out diagonal that are all one's - doc compares to themselves should be exact match
-	# TODO: maybe move this to utility
-	np.fill_diagonal(sim_mat, 0)
-
-	# get the max value of each row
-	most_similar_indices = sim_mat.argmax(1)
-	print most_similar_indices
-	similar_pairs = zip(range(processor.doc_count), most_similar_indices)
+	similar_pairs = processor.similarity_analysis()
 	data_output = {processor.doc_collection[f].link: processor.doc_collection[s].link for f, s in similar_pairs}
 	
-	with open('similar_0813.json', 'w') as file_output:
+	with open('similar_0817.json', 'w') as file_output:
 		json.dump(data_output, file_output)
 
 	# print original text of similar pairs
