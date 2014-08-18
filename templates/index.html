@@ -19,16 +19,27 @@
 			</form>
 		</section>
 
+		{% if qry is defined %}
 		<section id="result" class="container">
+			<!-- TODO: don't show labels when there's nothing to show-->
 			<div class="col-md-6">
-				<strong>Your search: </strong><a href="{{qry}}" target="_blank">{{qry}}</a>
-				<p>{{qry_desc}}</p>
+				<h2>Your Search</h2>
+				<a href="{{qry.link}}" target="_blank">{{qry.link}}</a>
+				<p>{{qry.original}}</p>
 			</div>
 
 			<div class="col-md-6">
-				<strong>Most similar: </strong><a href="{{link}}" target="_blank">{{link}}</a>
-				<p>{{desc}}</p>
+				<h2>Top Matches</h2>
+				<ol>
+				{% for m in matches %}
+				<li>
+					<a href="{{m.link}}" target="_blank">{{m.link}}</a>
+					<p>{{m.original}}</p>
+				</li>
+				{% endfor %}
+				</ol>
 			</div>
 		</section>
+		{% endif %}
 	</body>
 </html>

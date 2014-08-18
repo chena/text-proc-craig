@@ -30,33 +30,34 @@ def main():
 
 	url = request.form['url']
 	domain = 'newyork.craigslist.org/'
-	print url
-	# naive checking
+
 	if not domain in url:
-		# should give some kind of error
+		# TODO: should give some kind of error
 		return render_template('index.html')
 
 	#if known_pairs.has_key(url):
 	#	return render_template('index.html', qry=url, link=known_pairs[url])
 
-	# unseen document
-	qry_doc = _get_qry_page(url)
-	processed = processor.process_doc(qry_doc.encode('utf-8'))
+	# process unseen document
+	qry_text = _get_qry_page(url)
+	processed = processor.process_doc(qry_text.encode('utf-8'))
 	vect = processor.vectorizer.transform([' '.join(processed)]) # this returns a sparse vector of csr_matrix type
+	qry_doc = Document(url, qry_text, processed)
+
+	# build similarity matrix and extract top matches
 	sim_vect = processor.doc_mat * vect.T
-	
 	top_ind = processor.get_top_ind(sim_vect.A.flatten(), 10)
 	matches = [processor.doc_collection[i] for i in top_ind]
-	for m in matches:
-		print m.link
 
-	max_ind = np.argmax(sim_vect.A)
-	match_doc = processor.doc_collection[max_ind]
+	# extract top keywords from the query document
 	
+	# TODO: get keywords
 	#top_terms = processor.get_top_terms(processor.doc_mat[max_ind,:], 10)
 	#print top_terms
 
-	return render_template('index.html', qry=url, qry_desc=qry_doc, link=match_doc.link, desc=match_doc.original)
+	# TODO: exclude exact match
+
+	return render_template('index.html', qry=qry_doc, matches=matches)
 
 def _get_qry_page(url):
 	http = urllib3.PoolManager()

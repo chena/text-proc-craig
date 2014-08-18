@@ -18,7 +18,6 @@ class Document:
 		self.link = link
 		self.original = original
 		self.processed = processed
-		self.rank_list = []
 
 class TextProcessor(object):
 	def __init__(self):
@@ -121,9 +120,6 @@ class TextProcessor(object):
 		print vect.shape
 		top = np.argpartition(vect, -num)[-num:]
 		return top[np.argsort(vect[top])][::-1]
-
-	#def get_rank_list(self, vect, num=10):
-
 		
 		"""
 		dense_mat = mat.A
