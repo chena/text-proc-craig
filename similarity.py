@@ -3,13 +3,13 @@ import sys
 from processor import TextProcessor, Document
 import numpy as np
 
-def save_similar_pairs(json_data):
+def find_similar_pairs(data):
 	"""
 	Find the most similar document for each document in the collection, output the pairs
 	"""
 	processor = TextProcessor()
 
-	for post in json.loads(json_data):
+	for post in json.loads(data):
 		# combine title and post content
 		text = post['title'] + ' ' + post['description']
 		doc = Document(post['link'], text, processor.process_doc(text.encode('utf-8')))
@@ -44,5 +44,5 @@ if __name__ == '__main__':
 		print >> sys.stderr, 'usage: %s json_file' % sys.argv[0]
 	else:
 		json_data = open(sys.argv[1]).read()
-		save_similar_pairs(json_data)
+		find_similar_pairs(json_data)
 		
