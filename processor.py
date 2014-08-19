@@ -1,4 +1,5 @@
 from __future__ import division
+from nltk import data
 from nltk import sent_tokenize
 from nltk import word_tokenize
 from nltk.corpus import stopwords
@@ -13,7 +14,7 @@ import numpy as np
 import json
 
 # set nltk_data path so data can be found on Heroku
-nltk.data.path.append('./nltk_data/')
+data.path.append('./nltk_data/')
 
 class Document:
 	def __init__(self, link, title, description, processed):
