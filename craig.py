@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import urllib3
 import numpy as np
 from flask.ext.pymongo import PyMongo
+import os
 
 app = Flask(__name__)
 mongo = PyMongo(app)
@@ -55,5 +56,6 @@ def _get_qry_doc(url):
 	return Document(url, title, desc, processor.process_doc(text.encode('utf-8')))
 
 if __name__ == '__main__':
-    app.run(debug=True, port=7000)
+	port = int(os.environ.get('PORT', 7000))
+	app.run(host='0.0.0.0', port=port)
 
