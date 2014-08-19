@@ -16,3 +16,4 @@ scipy==0.14.0
 scrapy-mongodb==0.7.2
 urllib3==1.9
 cryptography==0.5.3
+cffi==0.8.6
