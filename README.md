@@ -37,10 +37,3 @@ To run the app:
 
 * Run `python craig.py` to start the server
 * Visit the running app at `http://localhost:7000/`
-
-## TODO's
-
-* Return a ranked list instead of a single nearest neighbour
-* Extract key words from each posting
-* Work on the frontend UI
-* Schedule crawling work
