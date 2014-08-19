@@ -8,3 +8,4 @@ pymongo==2.7.2
 scikit-learn==0.15.1
 scrapy-mongodb==0.7.2
 urllib3==1.9
+cryptography==0.5.3
