@@ -12,6 +12,9 @@ import math
 import numpy as np
 import json
 
+# set nltk_data path so data can be found on Heroku
+nltk.data.path.append('./nltk_data/')
+
 class Document:
 	def __init__(self, link, title, description, processed):
 		self.link = link
