@@ -3,7 +3,7 @@ Flask-PyMongo==0.3.0
 Scrapy==0.24.4
 beautifulsoup4==4.3.2
 nltk==2.0.4
-numpy==1.8.2
+numpy==1.8.1
 pymongo==2.7.2
 scikit-learn==0.15.1
 scrapy-mongodb==0.7.2
