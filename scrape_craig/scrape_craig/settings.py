@@ -5,6 +5,7 @@
 #
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #
+import os
 
 BOT_NAME = 'scrape_craig'
 
@@ -12,7 +13,7 @@ SPIDER_MODULES = ['scrape_craig.spiders']
 NEWSPIDER_MODULE = 'scrape_craig.spiders'
 
 # scrapy-mongodb settings
-MONGODB_URI = 'mongodb://localhost:27017'
+MONGODB_URI = os.getenv('MONGOHQ_URL')
 MONGODB_DATABASE = 'craig'
 MONGODB_COLLECTION = 'postings'
 MONGODB_UNIQUE_KEY = 'pid'

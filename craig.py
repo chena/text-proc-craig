@@ -9,8 +9,10 @@ from flask.ext.pymongo import PyMongo
 import os
 
 app = Flask(__name__)
+app.config['MONGO_URI'] = os.getenv('MONGOHQ_URL')
 mongo = PyMongo(app)
 processor = TextProcessor()
+
 with app.app_context():
 	# How to refresh data for a running app? Delete outdated data?
 	processor.map_data(mongo.db.postings.find())
