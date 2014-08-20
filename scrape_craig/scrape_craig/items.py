@@ -5,3 +5,4 @@ class ScrapeCraigItem(Item):
 	link = Field()
 	title = Field()
 	description = Field()
+	created_at = Field()

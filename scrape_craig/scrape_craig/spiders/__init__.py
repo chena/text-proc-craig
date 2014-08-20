@@ -5,6 +5,7 @@ from scrape_craig.items import ScrapeCraigItem
 from scrapy.contrib.linkextractors import LinkExtractor
 from scrapy.http import Request
 import re
+from datetime import datetime
 
 class CraigSpider(CrawlSpider):
 	name = 'craig'
@@ -38,6 +39,7 @@ class CraigSpider(CrawlSpider):
 		
 		body = response.xpath('//section[@id="postingbody"]/text()').extract()
 		item['description'] = ' '.join([b.strip() for b in body]).strip()
+		item['created_at'] = datetime.now()
 		
 		# TODO: extract price? location?
 		yield item
