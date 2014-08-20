@@ -7,6 +7,7 @@ import urllib3
 import numpy as np
 from flask.ext.pymongo import PyMongo
 import os
+import sys
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = os.getenv('MONGOHQ_URL')
@@ -53,6 +54,10 @@ def _get_qry_doc(url):
 	http = urllib3.PoolManager()
 	page = http.request('GET', url).data
 	data = BeautifulSoup(page)
+
+	print data
+	sys.stdout.flush()
+
 	title, desc = data.h2.text.strip(), data.find(id='postingbody').text.strip() 
 	text = title + ' ' + desc
 	return Document(url, title, desc, processor.process_doc(text.encode('utf-8')))
