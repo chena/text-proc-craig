@@ -19,7 +19,7 @@ With the vector representations, we can mesaure the similarity between two docum
 
 ## Setup
 
-There are a couple tools we need to install to run the application. Assuming that you alreayd have `pip` installed:
+There are a couple tools we need to install to run the application. Assuming that you alreayd have `pip` installed, you can either run `pip install -r requirements.txt` or install these packages individually:
 
 ```
 pip install nltk
@@ -28,9 +28,7 @@ pip install Scrapy
 pip install beautifulsoup4
 pip install Flask-PyMongo
 pip install scrapy-mongodb
-
 ```
-
 ## Usage
 
 To run the app:
