@@ -22,4 +22,4 @@ MONGODB_STOP_ON_DUPLICATE = 1 # tell the crawler to stop when one duplicate is d
 ITEM_PIPELINES = ['scrapy_mongodb.MongoDBPipeline']
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'scrap_craig (+http://www.yourdomain.com)'
+USER_AGENT = 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2049.0 Safari/537.36'
