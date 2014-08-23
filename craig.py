@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request
 from processor import TextProcessor, Document
-import json
 import re
 from bs4 import BeautifulSoup
 import urllib3
@@ -29,10 +28,7 @@ def main():
 
 	if not domain in url:
 		# TODO: should give some kind of error
-		return render_template('index.html')
-
-	#if known_pairs.has_key(url):
-	#	return render_template('index.html', qry=url, link=known_pairs[url])
+		return render_template('index.html', error_msg='Please enter a valid URL from')
 
 	# process unseen document
 	qry_doc = _get_qry_doc(url)
