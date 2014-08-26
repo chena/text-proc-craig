@@ -62,10 +62,9 @@ class TextProcessor(object):
 		mat = np.zeros((self.doc_count, len(self.inverse_list)))
 
 		index = 0
-		for wc in word_counts:
+		for index, wc in enumerate(word_counts):
 			for w, c in wc.items():
 				mat[index, self.word_list.index(w)] = c
-			index += 1
 
 		# apply the idf-weigts to each column of the matrix corresponding to each term
 		for i in range(mat.shape[1]):
@@ -115,7 +114,7 @@ class TextProcessor(object):
 		most_similar_indices = sim_mat.argmax(1)
 
 		# return pairs of similar documents
-		return zip(range(self.doc_count), most_similar_indices)
+		return enumerate(most_similar_indices)
 
 	def get_top_ind(self, vect, num=10):
 		"""
