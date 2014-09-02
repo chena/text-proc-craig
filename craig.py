@@ -68,7 +68,7 @@ def _get_qry_doc(url):
 		raise CraigParseError('The content of the queried page cannot be processed')
 
 	return Document(url, title, desc, 
-			processor.process_doc(title + ' ' + desc.encode('utf-8')))
+			processor.process_doc((title + ' ' + desc).encode('utf-8')))
 
 class CraigParseError(Exception):
 	def __init__(self, msg):
