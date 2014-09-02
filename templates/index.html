@@ -7,7 +7,7 @@
     	<!--<script src="{{ url_for('static', filename='jquery-1.11.0.min.js') }}"></script>-->
 	</head>
 	<body>
-		<section id="query" class="container col-md-8 col-md-offset-2">
+		<div class="container col-md-8 col-md-offset-2">
 			<h1>Craig Matcher</h1>
 			<form name="input" method="post">
 				<div class="input-group">
@@ -17,11 +17,13 @@
 					</span>
 				</div>
 			</form>
-		</section>
+			{% if error is defined %}
+			<p class="error">{{error}}</p>
+			{% endif %}
+		</div>
 
 		{% if qry is defined %}
 		<section id="result" class="container">
-			<!-- TODO: don't show labels when there's nothing to show-->
 			<div class="col-md-6">
 				<h2>Your Search</h2>
 				<a href="{{qry.link}}" target="_blank">{{qry.title}}</a>

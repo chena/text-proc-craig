@@ -14,11 +14,10 @@ mongo = PyMongo(app)
 processor = TextProcessor()
 
 with app.app_context():
-	# How to refresh data for a running app? Delete outdated data?
 	processor.map_data(mongo.db.postings.find())
 	processor.build_doc_matrix()
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def main():
 	if request.method == 'GET':
 		return render_template('index.html')
@@ -27,11 +26,13 @@ def main():
 	domain = 'newyork.craigslist.org/'
 
 	if not domain in url:
-		# TODO: should give some kind of error
-		return render_template('index.html', error_msg='Please enter a valid URL from')
+		return render_template('index.html', error='Please enter a valid URL')
 
 	# process unseen document
-	qry_doc = _get_qry_doc(url)
+	try:
+		qry_doc = _get_qry_doc(url)
+	except CraigParseError, e:
+		return render_template('index.html', error=e.msg)
 	vect = processor.vectorizer.transform([' '.join(qry_doc.processed)]) # this returns a sparse vector of csr_matrix type
 
 	# build similarity matrix and extract top matches
@@ -51,13 +52,28 @@ def _get_qry_doc(url):
 	page = http.request('GET', url).data
 	data = BeautifulSoup(page)
 
-	print data
-	sys.stdout.flush()
+	title, desc = data.h2, data.find(id='postingbody')
+	expired_msg = 'This posting has been deleted by its author'
+	not_found_msg = 'No web page for this address'
 
-	title, desc = data.h2.text.strip(), data.find(id='postingbody').text.strip() 
-	text = title + ' ' + desc
-	return Document(url, title, desc, processor.process_doc(text.encode('utf-8')))
+	if title:
+		title = title.text.strip()
+		if expired_msg in title:
+			raise CraigParseError(expired_msg)
+	if desc:
+		desc = desc.text.strip()
+		if not_found_msg in desc:
+			raise CraigParseError(not_found_msg)
+	if not title or not desc:
+		raise CraigParseError('The content of the queried page cannot be processed')
 
+	return Document(url, title, desc, 
+			processor.process_doc(title + ' ' + desc.encode('utf-8')))
+
+class CraigParseError(Exception):
+	def __init__(self, msg):
+		self.msg = msg
+	
 if __name__ == '__main__':
 	port = int(os.environ.get('PORT', 7000))
 	app.run(host='0.0.0.0', port=port, debug=True)

@@ -1,12 +1,3 @@
-#query {
-	margin-bottom: 20px;
-}
-
-#result {
-	padding: 15px;
-}
-
-#result ul {
-	list-style-type: none;
-	outline: none;
+.error {
+	color: #a94442;
 }
