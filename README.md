@@ -4,7 +4,7 @@ An app that allows you the find similar sublet postings in NYC on Craiglist base
 
 * Text processing with [NLTK](http://www.nltk.org/), such as tokenization, stopwords removal and stemming.
 * Building a VSM(vector space model) for a collection of documents using the [scikit-learn](http://scikit-learn.org/stable/index.html) library. Results are used to compare with my own implementation of the algorithms.
-* Crawling data from NYC sublet postings on Craigslist using [Scrapy](http://doc.scrapy.org/en/latest/index.html). By default, each run will scrape the first 10 pages of [https://newyork.craigslist.org/sub/](https://newyork.craigslist.org/sub/) (1000 postings with their titles and contents) 
+* Crawling data from NYC sublet postings on Craigslist using [Scrapy](http://doc.scrapy.org/en/latest/index.html). By default, each run will scrape the first 10 pages of [https://newyork.craigslist.org/sub/](https://newyork.craigslist.org/sub/), which contains 1000 postings with their titles and contents. The job is scheduled to run once a day.
 * Data storage and retrieval using [MongoDB](http://www.mongodb.org/), with [Flask-PyMongo](http://flask-pymongo.readthedocs.org/en/latest/) and [scrapy-mongodb](http://sebdah.github.io/scrapy-mongodb/) (MongoDB pipeline for Scrapy).
 
 ## Brief Background - Text Processing and VSM
@@ -35,3 +35,7 @@ To run the app:
 
 * Run `python craig.py` to start the server
 * Visit the running app at `http://localhost:7000/`
+
+## Demo
+<img src="https://raw.githubusercontent.com/chena/text-proc-craig/master/craig.png">
+
