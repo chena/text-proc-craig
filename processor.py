@@ -61,7 +61,6 @@ class TextProcessor(object):
 		# prepare the document matrix
 		mat = np.zeros((self.doc_count, len(self.inverse_list)))
 
-		index = 0
 		for index, wc in enumerate(word_counts):
 			for w, c in wc.items():
 				mat[index, self.word_list.index(w)] = c
