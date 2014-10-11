@@ -19,17 +19,18 @@ With the vector representations, we can mesaure the similarity between two docum
 
 ## Setup
 
-There are a couple tools we need to install to run the application. Assuming that you alreayd have `pip` installed, you can either run `pip install -r requirements.txt` or install these packages individually:
+* Assuming that you have `pip` installed, run `pip install -r requirements.txt` to install dependencies.
+* Set the URI of your database in your environment. For localhost, you can set it to `mongodb://localhost:27017`
 
 ```
-pip install nltk
-pip install -U numpy scipy scikit-learn
-pip install Scrapy
-pip install beautifulsoup4
-pip install Flask-PyMongo
-pip install scrapy-mongodb
+export MONGOHQ_URL=<DB_PATH> 
 ```
+
 ## Usage
+
+To scrape data (the first 1000 postins) from [https://newyork.craigslist.org/sub/](https://newyork.craigslist.org/sub/):
+
+* Run `scrapy crawl craig` to start the spider. Output will be logged in the console. When the crawl job is done, check your database to make sure that the `postings` collection contains rougly 1000 documents.
 
 To run the app:
 
