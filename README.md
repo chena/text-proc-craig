@@ -13,7 +13,7 @@ An app that allows you the find similar sublet postings in NYC on Craiglist base
 
 In information retrieval, [tf-idf](http://en.wikipedia.org/wiki/Tf%E2%80%93idf) is a standard method for measuring the importance of a word in a document with resepct to a corpus. 
 
-A [vector space model](http://en.wikipedia.org/wiki/Vector_space_model) is a way to represent a collection of documents in a high-dimensional space, with each row of the matrix being a document represented by a sparse vector composed of td-idf weights.
+A [vector space model](http://en.wikipedia.org/wiki/Vector_space_model) is a way to represent a collection of documents in a high-dimensional space, with each row of the matrix being a document represented by a sparse vector composed of tf-idf weights.
 
 With the vector representations, we can mesaure the similarity between two documents using [consine similarity](http://en.wikipedia.org/wiki/Cosine_similarity).
 
