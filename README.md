@@ -1,6 +1,6 @@
 # Craig Matcher
 
-An app that allows you the find similar sublet postings in NYC on Craiglist based on the textual information contained in the documents. This project has various components and is still in progress.
+An app that allows you to find similar sublet postings in NYC on Craiglist based on the textual information contained in the documents. This project has various components and is still in progress.
 
 * Text processing with [NLTK](http://www.nltk.org/), such as tokenization, stopwords removal and stemming.
 * Building a VSM(vector space model) for a collection of documents using the [scikit-learn](http://scikit-learn.org/stable/index.html) library. Results are used to compare with my own implementation of the algorithms.
